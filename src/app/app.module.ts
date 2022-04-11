@@ -13,6 +13,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AppComponent } from './app.component';
 import { PostsComponent, PostCreateComponent, PostListComponent } from './posts';
 import { HeaderComponent } from './header';
+import { AppRoutingModule } from './app-routing.module';
 
 
 
@@ -26,6 +27,7 @@ import { HeaderComponent } from './header';
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
