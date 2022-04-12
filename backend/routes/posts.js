@@ -1,3 +1,4 @@
+const { count } = require('console');
 const express = require('express');
 const multer = require('multer');
 
@@ -26,12 +27,26 @@ const storage = multer.diskStorage({
   }
 });
 
-
 router.get('', (req, res, next) => {
-  Post.find().then((posts) => {
+  const pageSize = +req.query.pagesize;
+  const currentPage = req.query.page;
+  const postQuery = Post.find();
+  let fetchedPosts;
+  
+  if(pageSize && currentPage){
+    postQuery.skip(pageSize*(currentPage-1))
+    .limit(pageSize);
+  }
+  postQuery.find().then((posts) => {
+    fetchedPosts = posts;
+    return Post.count();
+  })
+  .then(count => {
     res.status(200).json({
       message: 'Post Fetched successfully',
-      posts: posts
+      posts: fetchedPosts,
+      maxPosts: count
+
     });
   });
 });
