@@ -1,4 +1,3 @@
-const { count } = require('console');
 const express = require('express');
 const multer = require('multer');
 
