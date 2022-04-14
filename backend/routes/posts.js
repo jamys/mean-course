@@ -50,6 +50,10 @@ router.get('', (req, res, next) => {
         maxPosts: count
 
       });
+    }).catch(error => {
+      res.status(500).json({
+        message: 'Fetching posts failed!'
+      });
     });
 });
 
@@ -76,6 +80,10 @@ router.post('', checkAuth,
             imagePath: result.imagePath
           }
         })
+      }).catch(error => {
+        res.status(500).json({
+          message: 'Creating a post failed!'
+        });
       });
   });
 
@@ -99,17 +107,21 @@ router.put('/:id', checkAuth,
       creator: req.userData.userId
     }, post).then(result => {
 
-      if(result.modifiedCount > 0) {
-        
+      if (result.modifiedCount > 0) {
+
         res.status(200).json({
           message: "Update successful"
         });
-      }else {
+      } else {
         res.status(401).json({
           message: "Not authorized"
         });
       }
-      
+
+    }).catch(error => {
+      res.status(500).json({
+        message: "Couldn't update post!"
+      })
     });
   });
 
@@ -122,6 +134,10 @@ router.get('/:id', (req, res, next) => {
         message: "Post not found"
       });
     }
+  }).catch(error => {
+    res.status(500).json({
+      message: "Fetching post failed!"
+    })
   });
 });
 
@@ -130,8 +146,8 @@ router.delete('/:id', checkAuth, (req, res, next) => {
     _id: req.params.id,
     creator: req.userData.userId
   }).then((result) => {
-    
-    if(result.deletedCount > 0 ) {
+
+    if (result.deletedCount > 0) {
       res.status(200).json({
         message: "Deletion successful"
       });
@@ -140,6 +156,10 @@ router.delete('/:id', checkAuth, (req, res, next) => {
         message: "Not authorized"
       });
     }
+  }).catch(error => {
+    res.status(500).json({
+      message: "Delete post failed!"
+    })
   });
 
 });
